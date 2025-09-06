@@ -1,0 +1,11 @@
+<div class="product-list-container">
+    <div class="filters">
+        <input [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Search">
+        <select [(ngModel)]="selectedCategory" (change)="filterProducts()">...</select>
+    </div>
+
+    <div class="product-grid">
+        <app-product-card *ngFor="let product of products" [product]="product" (addToCart)="onAddToCart($event)">
+        </app-product-card>
+    </div>
+</div>
