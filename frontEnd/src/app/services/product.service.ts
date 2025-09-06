@@ -16,7 +16,7 @@ export interface Product {
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/api/products'; // in future we can put in .env file
+  private apiUrl = 'http://localhost:3000/api/products'; // in the future we can put in .env file
 
   constructor(private http: HttpClient) {}
    

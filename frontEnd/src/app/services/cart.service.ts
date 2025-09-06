@@ -11,7 +11,6 @@ export interface CartItem {
   providedIn: 'root',
 })
 export class CartService {
-  // BehaviorSubject holds the current cart state
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
   cart$ = this.cartSubject.asObservable();
 
@@ -30,13 +29,11 @@ export class CartService {
     localStorage.setItem('cart', JSON.stringify(this.cartSubject.getValue()));
   }
 
-  // Add product or increase qty if already in cart
   addToCart(product: Product): void {
     const cart = this.cartSubject.getValue();
     const itemIndex = cart.findIndex(i => i.product._id === product._id);
 
     if (itemIndex > -1) {
-      // Increase qty
       cart[itemIndex].qty += 1;
     } else {
       cart.push({ product, qty: 1 });
@@ -46,14 +43,12 @@ export class CartService {
     this.saveCartToStorage();
   }
 
-  // Remove product completely from cart
   removeFromCart(productId: string): void {
     const cart = this.cartSubject.getValue().filter(i => i.product._id !== productId);
     this.cartSubject.next(cart);
     this.saveCartToStorage();
   }
 
-  // Update quantity of a product in the cart
   updateQty(productId: string, qty: number): void {
     if (qty <= 0) {
       this.removeFromCart(productId);
@@ -70,19 +65,16 @@ export class CartService {
     }
   }
 
-  // Clear all items from cart
   clearCart(): void {
     this.cartSubject.next([]);
     this.saveCartToStorage();
   }
 
-  // Calculate total price (without discount)
   getTotal(): number {
     return this.cartSubject.getValue()
       .reduce((acc, item) => acc + item.product.price * item.qty, 0);
   }
 
-  // Get current cart value (snapshot)
   getCartItems(): CartItem[] {
     return this.cartSubject.getValue();
   }
