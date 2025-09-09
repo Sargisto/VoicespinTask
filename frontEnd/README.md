@@ -1,27 +1,43 @@
-# FrontEnd
+# Frontend – E-Commerce App (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+This is the **Angular frontend** of the E-Commerce application. It connects to the backend API to display products, manage the cart, handle checkout, and show orders.
 
-## Development server
+Built with **Angular**, **RxJS**, and Angular Router.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+##  Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- `/products` page:
+  - List products with search, category filter, and price range
+  - Pagination and sorting
+  - Uses `ProductCardComponent` to display each product
+  - Custom Pipes: `priceWithTax`, `highlightSearch`
+  - Emits `addToCart` event to parent component
 
-## Build
+- `/checkout` page:
+  - Shows cart contents and allows quantity updates
+  - Input for `discountCode` (e.g., `SAVE5`)
+  - Submit order to backend API
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- `/orders/:id` page:
+  - Displays order details with product names, quantities, and total
 
-## Running unit tests
+- `CartService`:
+  - Uses `BehaviorSubject` to manage cart state across components
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Route Guard:
+  - Prevents access to `/checkout` if the cart is empty
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+##  Tech Stack
 
-## Further help
+- Angular 15+ (or whichever version you use)
+- RxJS for state management
+- Angular Router for navigation
+- Bootstrap or custom CSS for styling (optional)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+---
+
+
