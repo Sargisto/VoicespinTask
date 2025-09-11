@@ -15,9 +15,6 @@ router.post('/', async (req, res) => {
   let total = 0;
   const orderItems = [];
 
-  const session = await Product.startSession();
-  // session.startTransaction();
-
   try {
     for (const item of items) {
       const { productId, qty } = item;
@@ -26,7 +23,7 @@ router.post('/', async (req, res) => {
         throw new Error('Each item must have a valid productId and qty > 0.');
       }
 
-      const product = await Product.findById(productId).session(session);
+      const product = await Product.findById(productId);
       if (!product) {
         throw new Error(`Product not found: ${productId}`);
       }
@@ -40,7 +37,7 @@ router.post('/', async (req, res) => {
 
       // Reduce stock
       product.stock -= qty;
-      await product.save({ session });
+      await product.save();
 
       orderItems.push({
         product: product._id,
@@ -62,15 +59,11 @@ router.post('/', async (req, res) => {
       discountApplied
     });
 
-    const savedOrder = await order.save({ session });
+    const savedOrder = await order.save();
 
-    // await session.commitTransaction();
-    // session.endSession();
 
     res.status(201).json({ message: 'Order placed', order: savedOrder });
   } catch (err) {
-    // await session.abortTransaction();
-    // session.endSession();
     console.error('Order error:', err);
     res.status(400).json({ error: err.message });
   }

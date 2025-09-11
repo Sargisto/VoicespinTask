@@ -1,0 +1,26 @@
+.loading {
+  font-style: italic;
+  color: #666;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
+
+.total {
+  margin-top: 1rem;
+  text-align: right;
+  font-size: 1.2rem;
+}

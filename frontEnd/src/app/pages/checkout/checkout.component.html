@@ -1,1 +1,55 @@
-<p>checkout works!</p>
+<h2>Checkout</h2>
+
+<div *ngIf="cartItems.length === 0">
+  <p>Your cart is empty.</p>
+</div>
+
+<div *ngIf="cartItems.length > 0">
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cartItems">
+        <td>{{ item.product.name }}</td>
+        <td>
+          <input
+            type="number"
+            min="1"
+            [value]="item.qty"
+            #qtyInput
+            (change)="updateQty(item.product._id, qtyInput.valueAsNumber)"
+          />
+        </td>
+        <td>{{ item.product.price | currency }}</td>
+        <td>{{ item.qty * item.product.price | currency }}</td>
+        <td>
+          <button (click)="removeItem(item.product._id)">Remove</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <label>
+      Discount Code:
+      <input [(ngModel)]="discountCode" placeholder="SAVE5" />
+    </label>
+  </div>
+
+  <p>Subtotal: {{ subtotal | currency }}</p>
+  <p *ngIf="discountCode === 'SAVE5'">Discount Applied (5%)</p>
+  <h3>Total: {{ total | currency }}</h3>
+
+  <button (click)="placeOrder()" [disabled]="isPlacingOrder">
+    {{ isPlacingOrder ? 'Placing Order...' : 'Place Order' }}
+  </button>
+
+  <p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+</div>

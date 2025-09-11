@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Product } from './product.service';
-
-export interface CartItem {
-  product: Product;
-  qty: number;
-}
+import { CartItem } from '../models/cart.model';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +27,7 @@ export class CartService {
 
   addToCart(product: Product): void {
     const cart = this.cartSubject.getValue();
-    const itemIndex = cart.findIndex(i => i.product._id === product._id);
+    const itemIndex = cart.findIndex((i) => i.product._id === product._id);
 
     if (itemIndex > -1) {
       cart[itemIndex].qty += 1;
@@ -44,9 +40,19 @@ export class CartService {
   }
 
   removeFromCart(productId: string): void {
-    const cart = this.cartSubject.getValue().filter(i => i.product._id !== productId);
+    const cart = this.cartSubject
+      .getValue()
+      .filter((i) => i.product._id !== productId);
     this.cartSubject.next(cart);
     this.saveCartToStorage();
+  }
+
+  setCart(items: CartItem[]): void {
+    this.cartSubject.next(items);
+  }
+
+  clear(): void {
+    this.cartSubject.next([]);
   }
 
   updateQty(productId: string, qty: number): void {
@@ -56,7 +62,7 @@ export class CartService {
     }
 
     const cart = this.cartSubject.getValue();
-    const itemIndex = cart.findIndex(i => i.product._id === productId);
+    const itemIndex = cart.findIndex((i) => i.product._id === productId);
 
     if (itemIndex > -1) {
       cart[itemIndex].qty = qty;
@@ -71,13 +77,12 @@ export class CartService {
   }
 
   getTotal(): number {
-    return this.cartSubject.getValue()
+    return this.cartSubject
+      .getValue()
       .reduce((acc, item) => acc + item.product.price * item.qty, 0);
   }
 
   getCartItems(): CartItem[] {
     return this.cartSubject.getValue();
   }
-
-  
 }
